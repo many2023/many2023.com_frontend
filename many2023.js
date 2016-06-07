@@ -9,6 +9,12 @@ var google_earth_json_url = "https://raw.githubusercontent.com/limhenry/earthvie
 google_earth_json = null;
 var google_image = null;
 var data = "";
+
+var unsplashCategoryArray = new Array("buildings", "food", "nature", "people", "technology", "objects");
+var unsplashUrl = "https://source.unsplash.com/category/";
+
+
+
 var server = app.listen(9090, function () {
 
   var host = server.address().address
@@ -48,10 +54,22 @@ function many2023_getImageByGoogleEarth(response){
 
     var google_image = google_earth_json[index];
 
-    var google_returnObject = generateReturnObject(google_image.country + " " + google_image.region, google_image.map);
+    var google_returnObject = generateReturnObject(google_image.country + " " + google_image.region, google_image.map, "map");
 
-    getImageBase64(google_image.image, response, google_returnObject, returnImage);
+    getImageBase64(google_image.image, response, google_returnObject);
 }
+
+function many2023_getImageByUnsplash(response){
+    var index = randomInt(0, unsplashCategoryArray[index].length);
+    
+    var category = unsplashCategoryArray[index];
+
+    var unsplashReturnObject = generateReturnObject(category, null, category);
+
+    getImageBase64(unsplashUrl + category, response, unsplashReturnObject);
+}
+
+
 
 var returnImage = function many2023_returnImage(res, retObj, data){
     retObj.data = data;
@@ -59,7 +77,7 @@ var returnImage = function many2023_returnImage(res, retObj, data){
     res.send(retObj);
 }
 
-function getImageBase64(url, response, retObj, callback){
+function getImageBase64(url, response, retObj){
     var base64data = "";
     var data_uri_prefix = "";
     https.get(url, function(res){
@@ -74,7 +92,10 @@ function getImageBase64(url, response, retObj, callback){
         res.on("end", function(){
             base64data = new Buffer(imgData).toString('base64');
             
-            callback(response, retObj, data_uri_prefix + base64data);
+            retObj.data = data_uri_prefix + base64data;
+
+            response.send(retObj);
+            // callback(response, retObj, data_uri_prefix + base64data);
         });
     });
 }
@@ -89,10 +110,11 @@ function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low + 1) + low);
 }
 
-function generateReturnObject(from, url, data){
+function generateReturnObject(from, url, category){
     var returnObject = {
                            'from': from,
-                           'url' : url
+                           'url' : url,
+                           'category': category
                        };
 
     return returnObject;
