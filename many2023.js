@@ -13,7 +13,9 @@ var data = "";
 var unsplashCategoryArray = new Array("buildings", "food", "nature", "people", "technology", "objects");
 var unsplashUrl = "https://source.unsplash.com/category/";
 
-
+var flickrImageListLength = 50;
+var flickrUrl = "https://api.flickr.com/services/rest/?api_key=b760f0b628ad7831be832fcb2ff5a29c&extras=url_o,geo,path_alias&format=json&method=flickr.interestingness.getList&per_page=" + flickrImageListLength;
+var flickrGetLocaltionUrl = "https://api.flickr.com/services/rest/?api_key=b760f0b628ad7831be832fcb2ff5a29c&format=json&method=flickr.places.resolvePlaceId&place_id=";
 
 var server = app.listen(9090, function () {
 
@@ -69,7 +71,36 @@ function many2023_getImageByUnsplash(response){
     getImageBase64(unsplashUrl + category, response, unsplashReturnObject);
 }
 
+function many2023_getImageByFlickr(response){
+    var flickrImageListResponse = null;
 
+    many2023_gets(flickrUrl, flickrImageListResponse, function(data){
+        flickrImageListResponse = JSON.parse(data);
+         
+         var index = -1;
+         var imageJson = null;
+
+         do {
+             index = randomInt(0, flickrImageListResponse.photo.lenth);
+        
+             var imageJson = flickrImageListResponse.photo[index];
+         }while(imageJson.url_o == null && imageJson.url_k == null)
+
+         if(imageJson.place_id != null){
+             many2023_gets(flickrGetLocaltionUrl+imageJson.place_id, null, function(res){
+                 var locationJson = JSON.parse(res);
+
+                 var location = locationJson.locality._content;
+
+                 var flickrReturnObject = generateReturnObject(location, null, null);
+                 
+                 var imageUrl = imageJson.url_o == null ? imageJson.url_k : imageJson.url_o;
+                 
+                 getImageBase64(imageUrl, response, flickrReturnObject);
+             });
+         }
+    });
+}
 
 var returnImage = function many2023_returnImage(res, retObj, data){
     retObj.data = data;
