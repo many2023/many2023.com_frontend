@@ -17,6 +17,9 @@ var flickrImageListLength = 50;
 var flickrUrl = "https://api.flickr.com/services/rest/?api_key=b760f0b628ad7831be832fcb2ff5a29c&extras=url_o,geo,path_alias&format=json&method=flickr.interestingness.getList&per_page=" + flickrImageListLength;
 var flickrGetLocaltionUrl = "https://api.flickr.com/services/rest/?api_key=b760f0b628ad7831be832fcb2ff5a29c&format=json&method=flickr.places.resolvePlaceId&place_id=";
 
+
+var px500Url = "https://api.500px.com/v1/photos?feature=fresh_today&sort=created_at&image_size=2048&consumer_key=cZicK4iowToDCXU8kY4uuNRihGC9bxOe7hlcDNTH";
+
 var server = app.listen(9090, function () {
 
   var host = server.address().address
@@ -100,6 +103,12 @@ function many2023_getImageByFlickr(response){
              });
          }
     });
+}
+
+function getImageBy500px(response){
+    var px500ReturnObject = generateReturnObject("fresh_today", null, "fresh_today");
+
+    getImageBase64(500pxUrl, response, px500ReturnObject);
 }
 
 var returnImage = function many2023_returnImage(res, retObj, data){
