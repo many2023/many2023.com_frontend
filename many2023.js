@@ -108,7 +108,7 @@ function many2023_getImageByFlickr(response){
 function getImageBy500px(response){
     var px500ReturnObject = generateReturnObject("fresh_today", null, "fresh_today");
 
-    getImageBase64(500pxUrl, response, px500ReturnObject);
+    getImageBase64(px500Url, response, px500ReturnObject);
 }
 
 var returnImage = function many2023_returnImage(res, retObj, data){
