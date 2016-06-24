@@ -134,7 +134,7 @@ function getImageBase64(url, response, retObj){
         });
 
         res.on("end", function(){
-            base64data = new Buffer(imgData).toString('base64');
+            base64data = new Buffer(imgData, 'binary').toString('base64');
             
             retObj.data = data_uri_prefix + base64data;
 
