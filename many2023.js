@@ -73,7 +73,7 @@ function many2023_getImageByUnsplash(response){
     
     var category = unsplashCategoryArray[index];
 
-    var unsplashReturnObject = generateReturnObject(category, null, category);
+    var unsplashReturnObject = generateReturnObject(category, null, category, null, null);
 
     getImageBase64(unsplashUrl + category, response, unsplashReturnObject);
 }
@@ -99,7 +99,7 @@ function many2023_getImageByFlickr(response){
 
                  var location = locationJson.locality._content;
 
-                 var flickrReturnObject = generateReturnObject(location, null, null);
+                 var flickrReturnObject = generateReturnObject(location, null, null, null, null);
                  
                  var imageUrl = imageJson.url_o == null ? imageJson.url_k : imageJson.url_o;
                  
@@ -110,7 +110,7 @@ function many2023_getImageByFlickr(response){
 }
 
 function getImageBy500px(response){
-    var px500ReturnObject = generateReturnObject("fresh_today", null, "fresh_today");
+    var px500ReturnObject = generateReturnObject("fresh_today", null, "fresh_today", null, null);
 
     getImageBase64(px500Url, response, px500ReturnObject);
 }
@@ -154,7 +154,7 @@ function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low + 1) + low);
 }
 
-function generateReturnObject(from, url, category, a=null, b=null){
+function generateReturnObject(from, url, category, a, b){
     var returnObject = {
                            'from': from,
                            'url' : url,
