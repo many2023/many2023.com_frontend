@@ -59,7 +59,11 @@ function many2023_getImageByGoogleEarth(response){
 
     var google_image = google_earth_json[index];
 
-    var google_returnObject = generateReturnObject(google_image.country + " " + google_image.region, google_image.map, "map");
+    var re = /@(.*),(.*),(.*)\/.*/i
+
+    var result = re.exec(google_image.map);
+
+    var google_returnObject = generateReturnObject(google_image.country + " " + google_image.region, google_image.map, "map", result[1], result[2]);
 
     getImageBase64(google_image.image, response, google_returnObject);
 }
@@ -150,11 +154,13 @@ function randomInt (low, high) {
     return Math.floor(Math.random() * (high - low + 1) + low);
 }
 
-function generateReturnObject(from, url, category){
+function generateReturnObject(from, url, category, a=null, b=null){
     var returnObject = {
                            'from': from,
                            'url' : url,
                            'category': category
+                           'a': a,
+                           'b': b
                        };
 
     return returnObject;
