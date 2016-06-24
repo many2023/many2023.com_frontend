@@ -158,7 +158,7 @@ function generateReturnObject(from, url, category, a, b){
     var returnObject = {
                            'from': from,
                            'url' : url,
-                           'category': category
+                           'category': category,
                            'a': a,
                            'b': b
                        };
