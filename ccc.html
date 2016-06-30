@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:svg="http://www.w3.org/2000/svg">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>RunJS</title>
+	<!-- <script id="jquery_183" type="text/javascript" class="library" src="/js/sandbox/jquery/jquery-1.8.3.min.js"></script> -->
+	</head>
+	<body>
+		<svg width="100%" height="100%" version="1.1">
+		</svg>
+		<script>
+			//创建SVGDOM
+			function svgdom(name,attrs){
+				var dom = document.createElementNS("http://www.w3.org/2000/svg",name);
+				if(attrs){
+					for(var k in attrs){
+						dom.setAttribute(k,attrs[k]);
+					}
+				}
+				return dom;
+			}
+			//查询
+			function q(p){
+				return document.querySelectorAll(p);
+			}
+
+			//坐标转换
+			function transform(base,coords,scale){
+				return coords.map(function(ci){
+					return {
+						x:base.x+ci.x*scale,
+						y:base.y - ci.y*scale
+					};
+				});
+			}
+			//计算曲线
+			function calcCurve(func,fx,tx,d){
+				var result = [];
+				for(var x=fx;x<tx+d;x+=d){
+					result.push({x:x,y:func(Math.min(x,tx))});
+				}
+				return result;
+			}
+			//坐标轴
+			function createCoord(base,svg){
+				//X轴
+				svg.appendChild(svgdom("line",{
+					"stroke-width":1,
+					"stroke":"black",
+					"x1":base.x-300,
+					"y1":base.y,
+					"x2":base.x+600,
+					"y2":base.y
+				}));
+				//Y轴
+				svg.appendChild(svgdom("line",{
+					"stroke-width":1,
+					"stroke":"black",
+					"x1":base.x,
+					"y1":base.y-300,
+					"x2":base.x,
+					"y2":base.y+300
+				}));
+			}
+			function norm(n){
+				if(isNaN(n)){
+					return -2147483648;
+				}else if(!isFinite(n)){
+					return 2147483648;
+				}
+				return n;
+			}
+			//曲线路径
+			function pathD(c){
+				var d = "M"+norm(c[0].x)+" "+norm(c[0].y)+" C";
+				d+=c.map(function(ci){
+					return norm(ci.x)+" "+norm(ci.y)
+				}).join(" ");
+				return d;
+			}
+			//SVG路径
+			function createCurvePath(d){
+				return svgdom("path",{
+					"stroke-width":1,
+					"stroke":"red",
+					"d":d,
+					"fill":"transparent"
+				});;
+			}
+			var svg = q("svg")[0];
+			var base = {x:300,y:100}; //原点坐标
+			createCoord(base,svg);
+			//计算曲线
+			var curve = calcCurve(function(x){
+				return x*x; //绘制sin函数
+			},-Math.PI*2,Math.PI*4,.1);
+			//坐标转换
+			var tf = transform(base,curve,40);
+			//转换为svg path
+			svg.appendChild(createCurvePath(pathD(tf)));
+		</script>
+	</body>
+</html>
