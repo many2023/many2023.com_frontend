@@ -13,5 +13,7 @@ var server = app.listen(9090, function () {
 
 app.get('/', function (req, res) {
 //   res.send(data_uri_prefix + base64data);
-    res.send(getIP.getRequestIp(req));
+    getIP.getLocationByIP(req, function(data){
+    	res.send(data.countryName);
+    });
 })

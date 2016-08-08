@@ -2,7 +2,7 @@ var http = require("http");
 
 var url = "http://api.ipinfodb.com/v3/ip-city/?key=3ba0e6e2d21254d8b5e122fe49bb6de2653220d10e31839938b3d1b504ce95e8&format=json&ip="
 
-function getRequestIp(request){
+function getLocationByIP(request, callback){
 
 	console.log(url + getIP(request));
 
@@ -15,7 +15,7 @@ function getRequestIp(request){
 
 		res.on("end", function(){
 			console.log(data);
-		    return data.countryName;
+		    callback(data);
 		});
 	});
 }
@@ -28,4 +28,4 @@ function getIP(req) {
     req.connection.socket.remoteAddress;
 };
 
-exports.getRequestIp = getRequestIp;
+exports.getLocationByIP = getLocationByIP;
