@@ -15,7 +15,7 @@ function getLocationByIP(request, callback){
 
 		res.on("end", function(){
 			console.log(data);
-		    callback(data);
+		    callback(JSON.parse(data);
 		});
 	});
 }
