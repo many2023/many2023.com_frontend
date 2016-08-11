@@ -1,4 +1,4 @@
-var getIP = require("./getLocation.js");
+var getIP = require("./weatherForcast.js");
 var express = require('express');
 
 var app = express();
@@ -13,8 +13,8 @@ var server = app.listen(9090, function () {
 
 app.get('/', function (req, res) {
 //   res.send(data_uri_prefix + base64data);
-    getIP.getLocationByIP(req, function(data){
-    	console.log(data.countryName);
-    	res.send(data.countryName);
+    getIP.weatherForecast(req, function(data){
+    	console.log(data);
+    	res.send(data);
     });
 })
