@@ -11,6 +11,7 @@ String.prototype.format=function()
 var url = "http://api.ipinfodb.com/v3/ip-city/?key=3ba0e6e2d21254d8b5e122fe49bb6de2653220d10e31839938b3d1b504ce95e8&format=json&ip=";
 var url2 = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.places%20where%20text%3D%22{0}%22&format=json&diagnostics=true";
 var url3 = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D{0}&format=json&diagnostics=true";
+var url4 = "http://aqicn.org/aqicn/json/android/{0}/json"
 
 function getLocationByIP(request, callback){
 	httpGet(url + getIP(request), getLocationID, callback);
@@ -35,10 +36,20 @@ function getWeather(data, callback) {
 }
 
 function getWeatherDetail(data, callback) {
-	callback(data.query.results.channel);
+	var  weatherDetail = data.query.results.channel
+	httpGet(rul4.format(locationName), getAQI, callback, weatherDetail);
 }
 
-function httpGet(url, callback, callback2) {
+function getAQI(data, callback) {
+	var weatherDetail = data[0];
+	var aqi = data[1];
+
+	weatherDetail.aqi = aqi;
+
+	callback(weatherDetail);
+}
+
+function httpGet(url, callback, callback2, parentData) {
 	http.get(url, function(res){
 	    var data = "";
 
@@ -48,7 +59,16 @@ function httpGet(url, callback, callback2) {
 
 		res.on("end", function(){
 			console.log(data);
-		    callback(JSON.parse(data), callback2);
+			var dataObj = JSON.parse(data);
+			var resData;
+			
+			if(parentData != null) {
+				resData = [parentData, dataObj];
+			}
+			else {
+				resData = dataObj;
+			}
+		    callback(resData, callback2);
 		});
 	});
 }
