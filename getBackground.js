@@ -21,7 +21,6 @@ var px500Url = "https://api.500px.com/v1/photos?feature=fresh_today&sort=created
 
 function init() {
     many2023_gets(google_earth_json_url, google_earth_json, str2json);
-    console.log("google earth json length: %d",google_earth_json.length);
 }
 
 var str2json =  function many2023_str2json(str){
@@ -41,6 +40,8 @@ function many2023_gets(url, obj, callback){
 //        console.log("get end data:%s", data)
 
         callback(data);
+        
+        console.log("google earth json length: %d",google_earth_json.length);
     });
   });
 }

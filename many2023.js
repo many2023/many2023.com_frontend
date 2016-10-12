@@ -23,7 +23,7 @@ app.get('/getBackground', function (req, res) {
     getBackground.many2023_getImageByGoogleEarth(res);
 })
 
-app.get('/getIP', function (req, res) {
+app.get('/getWeather', function (req, res) {
     weatherForcast.weatherForecast(req, function(data){
     	console.log(data);
     	res.send(data);
