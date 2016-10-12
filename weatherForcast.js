@@ -13,6 +13,8 @@ var url2 = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20geo.p
 var url3 = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%3D{0}&format=json&diagnostics=true";
 var url4 = "http://aqicn.org/aqicn/json/android/{0}/json"
 
+var locationName = "";
+
 function getLocationByIP(request, callback){
 	httpGet(url + getIP(request), getLocationID, callback);
 }
@@ -26,7 +28,7 @@ function getIP(req) {
 };
 
 function getLocationID(data, callback) {
-	var locationName = data.cityName;
+	locationName = data.cityName;
 	httpGet(url2.format(locationName), getWeather, callback);
 }
 
