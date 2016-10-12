@@ -1,6 +1,9 @@
 var http = require("http");
 var https = require("https");
 
+exports.init = init;
+exports.many2023_getImageByGoogleEarth = many2023_getImageByGoogleEarth;
+
 var google_earth_json_url = "https://raw.githubusercontent.com/limhenry/earthview/master/earthview.json";
 google_earth_json = null;
 var google_image = null;
