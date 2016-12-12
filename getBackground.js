@@ -46,6 +46,24 @@ function many2023_gets(url, obj, callback){
   });
 }
 
+function many2023_getBackground(site, type, res) {
+    switch(site){
+        case "google":
+            many2023_getImageByGoogleEarth(res);
+            break;
+        case "unsplash":
+            many2023_getImageByUnsplash(res);
+            break;
+        case "flickr":
+            many2023_getImageByFlickr(res);
+            break;
+        case "500px":
+            getImageBy500px(res);
+            break;
+            
+    }
+}
+
 function many2023_getImageByGoogleEarth(response){
     var index = randomInt(0, google_earth_json.length);
 
