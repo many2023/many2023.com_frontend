@@ -20,6 +20,9 @@ var server = app.listen(9090, function () {
 
 
 app.get('/getBackground', function (req, res) {
+	var userName = req.query.userName;
+	var imageType = req.query.type;
+
     getBackground.many2023_getImageByGoogleEarth(res);
 })
 
