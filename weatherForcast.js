@@ -38,6 +38,7 @@ function getWeather(data, callback) {
 }
 
 function getWeatherDetail(data, callback) {
+       console.log(data);
 	var  weatherDetail = data.query.results.channel
 	httpGet(url4.format(locationName), getAQI, callback, weatherDetail);
 }
